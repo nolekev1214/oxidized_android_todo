@@ -18,8 +18,9 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ToDoVi
     private final LayoutInflater mInflator;
     private List<JSONObject> mItems;
 
-    ToDoListAdapter(Context context) {
+    public ToDoListAdapter(Context context, List<JSONObject> todosList) {
         mInflator = LayoutInflater.from(context);
+        mItems = todosList;
     }
 
     @NonNull
@@ -31,25 +32,17 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ToDoVi
 
     @Override
     public void onBindViewHolder(@NonNull ToDoListAdapter.ToDoViewHolder holder, int position) {
-        if (mItems != null) {
-            try{
-                JSONObject current = mItems.get(position);
-                holder.todoItemBox.setText(current.getString("todo"));
-                holder.todoItemBox.setChecked(current.getBoolean("done"));
-                holder.todoCategory.setText(current.getString("category"));
-            } catch (Exception e) {}
-        } else {
-            holder.todoItemBox.setText("Fucky");
-            holder.todoItemBox.setChecked(false);
-            holder.todoCategory.setText("wucky");
-        }
+        try{
+            JSONObject current = mItems.get(position);
+            holder.todoItemBox.setText(current.getString("todo"));
+            holder.todoItemBox.setChecked(current.getBoolean("done"));
+            holder.todoCategory.setText(current.getString("category"));
+        } catch (Exception e) {}
     }
 
     @Override
     public int getItemCount() {
-        if (mItems != null)
-            return mItems.size();
-        else return 0;
+        return mItems.size();
     }
 
     public class ToDoViewHolder extends RecyclerView.ViewHolder {
